@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>day1</title>
+    <title>title</title>
 
 </head>
 
@@ -18,34 +18,25 @@
 
 <script type="text/babel">
     const root = document.getElementById("root");
-    function Title(){
-        return(
-            <h3
-                style = {{
-                    color:"red"
-                }}
-                onMouseEnter={
-                    ()=>console.log("hi i am title")
-                }
-            > 안녕 나는 hovered </h3>
-        )
-    }
-    const Button =()=> (< button 
-    style = {{
-            backgroundColor: "tomato"
-        }}
-    onClick = {() => console.log("i am clicked")} >
-        clickMe </button>);
-    
-    function Container (){
+
+    function App(){
+        const [counter,setCounter] = React.useState(0);
+        const onClick=()=>{
+            setCounter(counter+1);
+            setCounter((current)=>current+1);
+        }
+        console.log("rendered");
+            console.log(counter);
         return(
                 <div>
-                    <Title/>
-                    <Button/>
+                    <h3>total clicks:{counter} </h3>
+                    < button onClick={onClick}>clickMe </button>
                 </div>
         )
     }
-      ReactDOM.render(<Container/>, root);
+        ReactDOM.render(<App/>, root);
+
+    
 </script>
 
 </html>
