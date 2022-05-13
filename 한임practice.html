@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>title</title>
+
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+<!-- react -->
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+<!-- react dom -->
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+<!-- prop types -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- babel -->
+
+
+
+
+<script type="text/babel">
+    function Header({onClick}){
+        return(
+            <header>
+                <h2><a href="" onClick={function(e){
+                    e.preventDefault();
+                    onClick()
+                }}>HOME</a></h2>
+            </header>
+        )
+    }
+    function Nav({chunk,onClick}){
+        const list=[];
+        for(let i=0;i<chunk.length;i++){
+            list.push(
+                <li key="i"><a href="" id={chunk[i].id} onClick={
+                    function(e){
+                        e.preventDefault();
+                        onClick(e.target.id);
+                        console.log(e.target.id)
+                    }}>{chunk[i].title}</a></li>
+            )
+        }
+        
+        return(
+            <nav>
+                <ol>
+                    {list}
+                </ol>
+            </nav>
+        )
+    }
+    function Article({title,body}){
+        return(            
+            <article>
+                <h3>{title}</h3>
+                <p>{body}</p>
+            </article>)
+    }
+function App(){
+    const chunk=[
+        {id:0 ,title:"고구마", body:"고구마가 좋은 이유는 보라색이 좋으니까"},
+        {id:1 ,title:"감자", body:"감자가 좋은 이유는 동그라니까"},
+        {id:2 ,title:"오이", body:"오이가 좋은 이유는 아삭하니까"}
+    ]
+    let [Mode,setMode]=React.useState("HOME");
+    let [Index,setIndex]=React.useState(null);
+    let changeArt 
+    
+
+    if(Mode==="HOME"){
+            changeArt=<Article title="내가 좋아하는 과일이 뭘까요" body="맞춰보세요"/>
+        }else if(Mode==="NOHOME"){
+            changeArt=<Article title={chunk[Index].title} body={chunk[Index].body}/>
+        }
+    return(
+
+        <div>
+            
+            <Header onClick={function(){
+                setMode("HOME");
+            }}/>
+            <Nav chunk={chunk} onClick={function(index){
+                setMode("NOHOME");
+                setIndex(index)
+            }}/>
+            {changeArt}
+        </div>
+    )
+}
+
+        const root = document.getElementById("root");
+        ReactDOM.render(<App/>, root);
+
+
+</script>
+
+</html>

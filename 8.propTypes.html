@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>title</title>
+
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+<!-- react -->
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+<!-- react dom -->
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+<!-- prop types -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- babel -->
+
+
+
+
+<script type="text/babel">
+    function Btn({content,onClick}){
+        console.log(content)
+    return(
+        <button
+        style={{
+            backgroundColor:"orange",
+            padding:"10px 20px",
+            borderRadius:"20px",
+        }}
+        onClick={
+            onClick
+    }
+        
+        >{content}</button>
+    )
+}
+const clicked=()=>{
+    alert("clicked !");
+}
+// const MemorizedBtn = React.memo(Btn);
+
+Btn.PropTypes={
+    content:PropTypes.string,
+    onClick:PropTypes.func,
+}
+
+function App(){
+    console.log(PropTypes)
+    const [value,setValue]= React.useState("Save Changes");
+    const changeValue = () =>setValue("revert Changes");
+        return(
+            <div>
+                <Btn content={value} onClick={changeValue}/>
+                <Btn content={13} onClick={changeValue}/>
+            </div>
+        );
+    }
+        const root = document.getElementById("root");
+        ReactDOM.render(<App/>, root);
+
+
+</script>
+
+</html>

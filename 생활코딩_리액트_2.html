@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>생활코딩_update</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+<!-- react -->
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+<!-- react dom -->
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+<!-- prop types -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- babel -->
+<script type="text/babel">
+    function Header({title,onChangeMode}){
+        return(
+            <header>
+                <h1><a href=""
+                    onClick={
+                        function(event){
+                            event.preventDefault();
+                            onChangeMode();//함수 호출해주기
+                        }
+                    }
+                    >{title}</a></h1>
+            </header>
+        )
+    }
+
+
+
+    function Article({title,body}){
+        return(
+            <article>
+                <h2>{title}</h2>
+                <p>{body}</p>
+            </article>
+        )
+    }
+    function Nav({topics,onChangeMode}){
+        const lis =[];
+        for (let i=0 ; i<topics.length; i++){
+            let t = topics[i];
+            lis.push(<li key={t.id}><a href="#" id={t.id}
+                onClick={
+                    function(e){
+                        e.preventDefault();
+                        onChangeMode(Number(e.target.id));
+                        //여기서 매개변수를 ㅗ내주는구만
+                    }
+                }
+                
+                >{t.title}</a>
+                </li>)
+        }
+        return(
+            <nav>
+                <ol>
+                    {lis}
+                </ol>
+            </nav>
+        )
+    }
+    function Create({onCreate}){
+        return(
+            <article>
+                <h2>create</h2>
+                <form onSubmit={function(e){
+                    e.preventDefault();
+                    const title = e.target.title.value;
+                    const body = e.target.body.value;
+                onCreate(title,body);
+                }}>
+                    <p><input type="text" name="title" placeholder="title" /></p>
+                    <p><textarea name="body" placeholder="body"></textarea></p>
+                    <p><input type="submit" value="Create"/></p>
+                </form>
+            </article>
+        )
+    }
+    function App(){
+        const [mode,setMode]=React.useState('WELCOME');
+        const [id,setId]=React.useState(null);
+        const [nextId,setNextId]=React.useState(4);
+        const [topics,setTopics] = React.useState([
+            {id:1, title:"html" , body:"html is..."},
+            {id:2, title:"css" , body:"css is..."},
+            {id:3, title:"js" , body:"js is..."}
+        ]);
+        let content=null;
+
+
+        if(mode==="WELCOME"){
+            content = <Article title="welcome" body="hi web"/>; //기본웰컴화면
+        }else if(mode==="READ"){
+            let title,body=null;
+            for(let i=0; i<topics.length; i++){
+                console.log(topics[i].id, id)
+                if(topics[i].id===id){
+                    title=topics[i].title;
+                    body=topics[i].body;
+                }
+        } 
+            content = <Article title={title} body={body}/>; //네비 클릭시 화면
+        }else if(mode==="CREATE"){
+            content = <Create onCreate={function(_title,_body){
+                const newTopic = {id:nextId,title: _title , body: _body}
+                //newTopic(topic)이렇게 할 수는 없음. 
+                //왜냐면 topic이 객체이기 때문에 객체를 상태로 만드려면 
+                //해당 객체를 복제품으로 만들고 그 복제품을 set하는 식으로 바꾸어야함.
+                const newTopics =[...topics];
+                newTopics.push(newTopic);
+                setTopics(newTopics);
+                setMode("READ");
+                setId(nextId);
+                setNextId(nextId+1)
+            }} />
+        }
+
+        return(
+            <div>
+            <Header title="WEB" onChangeMode = {()=>{
+                setMode("WELCOME");
+
+            }}/>
+            <Nav topics = {topics} onChangeMode={(_id)=>{               
+                setMode("READ");
+                setId(_id);
+            }
+            }/>
+            {content}
+            <a href="" onClick={function(e){
+                e.preventDefault();
+                setMode("CREATE");
+            }}>Create</a>
+        </div>
+        )
+    }
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />,root);
+
+</script>
+
+</html>

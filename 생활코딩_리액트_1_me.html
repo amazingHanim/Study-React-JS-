@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>생활코딩</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+<!-- react -->
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+<!-- react dom -->
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+<!-- prop types -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- babel -->
+<script type="text/babel">
+    function Header({title,onChangeMode}){
+        return(
+            <header>
+                <h1><a href=""
+                    onClick={
+                        function(event){
+                            event.preventDefault();
+                            onChangeMode();//함수 호출해주기
+                        }
+                    }
+                    >{title}</a></h1>
+            </header>
+        )
+    }
+
+    function Nav({topics,setBody,setTitle}){
+        const lis =[];
+        for (let i=0 ; i<topics.length; i++){
+            let t = topics[i];
+            lis.push(<li key={t.id}>
+                <a
+                href="#" 
+                id={t.id}
+                onClick={
+                    function(e){
+
+                        console.log( e.target.id)
+                        // console.log(topics[0].title)
+                        setTitle(topics[e.target.id].title);
+                        setBody(topics[e.target.id].body);
+                    }
+                }
+                
+                >{t.title}</a>
+                </li>)
+        }
+        return(
+            <nav>
+                <ol>
+                    {lis}
+                </ol>
+            </nav>
+        )
+    }
+
+    function Article({title,body}){
+        return(
+            <article>
+                <h2>{title}</h2>
+                <p>{body}</p>
+            </article>
+        )
+    }
+
+    function App(){
+        const mode = "Welcome";
+        const topics = [
+            {id:0, title:"html" , body:"html is..."},
+            {id:1, title:"css" , body:"css is..."},
+            {id:2, title:"js" , body:"js is..."}
+        ]
+        const [Title,setTitle]=React.useState("hi");
+        const [Body,setBody]=React.useState("hihihi");
+
+        return(
+            <div>
+            <Header title="WEB" onChangeMode = {()=>{alert('header')}}/>
+            <Nav topics = {topics} setTitle={setTitle} setBody={setBody}/>
+            <Article title={Title} body={Body}/>
+        </div>
+        )
+    }
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />,root);
+
+</script>
+
+</html>
